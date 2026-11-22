@@ -11,7 +11,15 @@
 #                                                                             #
 # *************************************************************************** #
 
-from ex1.plant import Plant
+class Plant:
+
+    def __init__(self) -> None:
+        self.name: str = ""
+        self.height: float = 0.0
+        self.age: int = 0
+
+    def show(self) -> None:
+        print(f"{self.name}: {self.height:.0f}cm, {self.age} days old")
 
 
 def main() -> None:
@@ -21,11 +29,12 @@ def main() -> None:
             ("Cactus", 15, 120)
     ]
 
+    print("=== Garden Plant Registry ===")
     for name, height, age in plants:
         plant = Plant()
         plant.name = name
         plant.height = height
-        plant.days = age
+        plant.age = age
         plant.show()
 
 

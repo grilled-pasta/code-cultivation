@@ -12,17 +12,11 @@
 # *************************************************************************** #
 
 def main() -> None:
-    print("=== Welcome to My Graden ===")
+    print("=== Welcome to My Garden ===")
     name = 'Rose'
-    height = '20cm'
-    age = '30 days'
-    data = {
-            'plant': name,
-            'height': height,
-            'age': age
-            }
-    for k, v in data.items():
-        print(f"{k.capitalize()}: {v}")
+    height = 25
+    age = 30
+    print(f"Plant: {name}\nHeight: {height}cm\nAge: {age} days")
     print("\n=== End of Program ===")
 
 
