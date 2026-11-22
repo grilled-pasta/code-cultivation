@@ -6,7 +6,7 @@
 #    By: alkonsta <alkonsta@student.codam.nl>      +#+  +:+       +#+         #
 #                                                +#+#+#+#+#+   +#+            #
 #    Created: 2026/11/19 12:25:47 by alkonsta         #+#    #+#              #
-#    Updated: 2026/11/22 19:10:05 by alkonsta        ###   ########.nl        #
+#    Updated: 2026/11/22 19:20:52 by alkonsta        ###   ########.nl        #
 #                                                                             #
 # *************************************************************************** #
 
@@ -75,12 +75,12 @@ class Plant:
         print(f"{self._name}: {self._height:.1f}cm, {self._age} days old")
         self._statistics.log("show")
 
-    def grow(self) -> None:
-        self.set_height(self._height + self._growth_per_day)
+    def grow(self, days: int = 1) -> None:
+        self.set_height(self._height + self._growth_per_day * days)
         self._statistics.log("grow")
 
-    def age(self) -> None:
-        self.set_age(self._age + 1)
+    def age(self, days: int = 1) -> None:
+        self.set_age(self._age + days)
         self._statistics.log("age")
 
 
@@ -118,14 +118,6 @@ class Seed(Flower):
     def show(self) -> None:
         super().show()
         print(f" Seeds: {self._seeds}")
-
-    def grow(self, days: int = 1) -> None:
-        self.set_height(self._height + self._growth_per_day * days)
-        self._statistics.log("grow")
-
-    def age(self, days: int = 1) -> None:
-        self.set_age(self._age + days)
-        self._statistics.log("age")
 
 
 class Tree(Plant):
@@ -169,8 +161,8 @@ class Vegetable(Plant):
         print(f" Harvest season: {self._harvest_season.capitalize()}")
         print(f" Nutritional value: {self._nutritional_value}")
 
-    def grow(self) -> None:
-        super().grow()
+    def grow(self, days: int = 1) -> None:
+        super().grow(days)
         self._nutritional_value += 1
 
 
