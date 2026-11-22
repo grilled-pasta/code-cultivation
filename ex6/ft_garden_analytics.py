@@ -6,12 +6,11 @@
 #    By: alkonsta <alkonsta@student.codam.nl>      +#+  +:+       +#+         #
 #                                                +#+#+#+#+#+   +#+            #
 #    Created: 2026/11/19 12:25:47 by alkonsta         #+#    #+#              #
-#    Updated: 2026/11/22 18:50:07 by alkonsta        ###   ########.nl        #
+#    Updated: 2026/11/22 19:10:05 by alkonsta        ###   ########.nl        #
 #                                                                             #
 # *************************************************************************** #
 
 class Plant:
-    statistics: Statistics
 
     class Statistics():
         def __init__(self) -> None:
@@ -36,7 +35,7 @@ class Plant:
         self._height: float = 0.0
         self._age: int = 0
         self._growth_per_day: float = growth_per_day
-        Plant.statistics = self.Statistics()
+        self._statistics: Plant.Statistics = self.Statistics()
 
         self.set_height(height)
         self.set_age(age)
@@ -47,7 +46,7 @@ class Plant:
 
     @classmethod
     def anonymous(cls) -> Plant:
-        return cls("Unknown plant", 0, 0)
+        return cls("Unknown plant")
 
     def _is_not_negative(self, attr: str, value: int | float) -> bool:
         if value < 0:
@@ -69,17 +68,20 @@ class Plant:
         if self._is_not_negative("age", value):
             self._age = value
 
+    def get_statistics(self) -> Plant.Statistics:
+        return self._statistics
+
     def show(self) -> None:
         print(f"{self._name}: {self._height:.1f}cm, {self._age} days old")
-        Plant.statistics.log("show")
+        self._statistics.log("show")
 
     def grow(self) -> None:
         self.set_height(self._height + self._growth_per_day)
-        Plant.statistics.log("grow")
+        self._statistics.log("grow")
 
     def age(self) -> None:
         self.set_age(self._age + 1)
-        Plant.statistics.log("age")
+        self._statistics.log("age")
 
 
 class Flower(Plant):
@@ -119,11 +121,11 @@ class Seed(Flower):
 
     def grow(self, days: int = 1) -> None:
         self.set_height(self._height + self._growth_per_day * days)
-        Plant.statistics.log("grow")
+        self._statistics.log("grow")
 
     def age(self, days: int = 1) -> None:
         self.set_age(self._age + days)
-        Plant.statistics.log("age")
+        self._statistics.log("age")
 
 
 class Tree(Plant):
@@ -142,12 +144,11 @@ class Tree(Plant):
                  growth_per_day: float = 0, trunk_diameter: float = 0):
         super().__init__(name, height, age, growth_per_day)
         self._trunk_diameter: float = trunk_diameter
-        Plant.statistics = Tree.Statistics()
 
     def produce_shade(self) -> None:
         print(f"Tree {self._name} now produces a shade of {self._height:.1f}cm"
               + f" long and {self._trunk_diameter:.1f}cm wide.")
-        Plant.statistics.log("shade")
+        self._statistics.log("shade")
 
     def show(self) -> None:
         super().show()
@@ -173,6 +174,10 @@ class Vegetable(Plant):
         self._nutritional_value += 1
 
 
+def display_statistics(plant: Plant) -> None:
+    plant.get_statistics().display()
+
+
 def main() -> None:
     print("=== Garden statistics ===")
 
@@ -184,23 +189,23 @@ def main() -> None:
     flower = Flower("Rose", 15, 10, 8, "red")
     flower.show()
     print(" [statistics for Rose]")
-    flower.statistics.display()
+    display_statistics(flower)
     print(" [asking the rose to grow and bloom]")
     flower.grow()
     flower.bloom()
     flower.show()
     print(" [statistics for Rose]")
-    flower.statistics.display()
+    display_statistics(flower)
 
     print("\n=== Tree")
     tree = Tree("Oak", 200, 365, trunk_diameter=5)
     tree.show()
     print(" [statistics for Oak]")
-    tree.statistics.display()
+    display_statistics(tree)
     print("[asking the oak to produce shade]")
     tree.produce_shade()
     print(" [statistics for Oak]")
-    tree.statistics.display()
+    display_statistics(tree)
 
     print("\n=== Seed")
     seed = Seed("Sunflower", 80, 45, color="yellow")
@@ -211,13 +216,13 @@ def main() -> None:
     seed.bloom(42)
     seed.show()
     print(" [statistics for Sunflower]")
-    seed.statistics.display()
+    display_statistics(seed)
 
     print("\n=== Anonymous")
     anonymous = Plant.anonymous()
     anonymous.show()
     print(" [statistics for Unknown plant]")
-    anonymous.statistics.display()
+    display_statistics(anonymous)
 
 
 if __name__ == "__main__":
