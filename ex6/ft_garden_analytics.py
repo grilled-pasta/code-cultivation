@@ -6,7 +6,7 @@
 #    By: alkonsta <alkonsta@student.codam.nl>      +#+  +:+       +#+         #
 #                                                +#+#+#+#+#+   +#+            #
 #    Created: 2026/11/19 12:25:47 by alkonsta         #+#    #+#              #
-#    Updated: 2026/11/22 19:20:52 by alkonsta        ###   ########.nl        #
+#    Updated: 2026/11/22 19:34:22 by alkonsta        ###   ########.nl        #
 #                                                                             #
 # *************************************************************************** #
 
@@ -29,7 +29,7 @@ class Plant:
                   f", {self._calls["age"]} age" +
                   f", {self._calls["show"]} show")
 
-    def __init__(self, name: str, height: float = 0, age: int = 0,
+    def __init__(self, name: str, height: float, age: int,
                  growth_per_day: float = 1.5) -> None:
         self._name: str = name
         self._height: float = 0.0
@@ -46,7 +46,7 @@ class Plant:
 
     @classmethod
     def anonymous(cls) -> Plant:
-        return cls("Unknown plant")
+        return cls("Unknown plant", 0, 0)
 
     def _is_not_negative(self, attr: str, value: int | float) -> bool:
         if value < 0:
@@ -86,8 +86,8 @@ class Plant:
 
 class Flower(Plant):
 
-    def __init__(self, name: str, height: float = 0, age: int = 0,
-                 growth_per_day: float = 1.5, color: str = ""):
+    def __init__(self, name: str, height: float, age: int, color: str, *,
+                 growth_per_day: float = 1.5):
         super().__init__(name, height, age, growth_per_day)
         self._color: str = color
         self._bloom: bool = False
@@ -106,9 +106,10 @@ class Flower(Plant):
 
 class Seed(Flower):
 
-    def __init__(self, name: str, height: float = 0, age: int = 0,
-                 growth_per_day: float = 1.5, color: str = ""):
-        super().__init__(name, height, age, growth_per_day, color)
+    def __init__(self, name: str, height: float, age: int, color: str, *,
+                 growth_per_day: float = 1.5):
+        super().__init__(name, height, age, color,
+                         growth_per_day=growth_per_day)
         self._seeds: int = 0
 
     def bloom(self, seeds: int = 0) -> None:
@@ -132,8 +133,8 @@ class Tree(Plant):
             super().display()
             print(f" {self._calls["shade"]} shade")
 
-    def __init__(self, name: str, height: float = 0, age: int = 0,
-                 growth_per_day: float = 0, trunk_diameter: float = 0):
+    def __init__(self, name: str, height: float, age: int,
+                 trunk_diameter: float, *, growth_per_day: float = 1.5):
         super().__init__(name, height, age, growth_per_day)
         self._trunk_diameter: float = trunk_diameter
 
@@ -149,12 +150,11 @@ class Tree(Plant):
 
 class Vegetable(Plant):
 
-    def __init__(self, name: str, height: float = 0, age: int = 0,
-                 growth_per_day: float = 0, harvest_season: str = "",
-                 nutritional_value: int = 0):
+    def __init__(self, name: str, height: float, age: int,
+                 harvest_season: str, *, growth_per_day: float = 1.5):
         super().__init__(name, height, age)
         self._harvest_season: str = harvest_season
-        self._nutritional_value: int = nutritional_value
+        self._nutritional_value: int = 0
 
     def show(self) -> None:
         super().show()
@@ -178,7 +178,7 @@ def main() -> None:
     print(f"Is 400 days more than a year? -> {Plant.is_older_than_year(400)}")
 
     print("\n=== Flower")
-    flower = Flower("Rose", 15, 10, 8, "red")
+    flower = Flower("Rose", 15, 10, "red", growth_per_day=8)
     flower.show()
     print(" [statistics for Rose]")
     display_statistics(flower)
@@ -190,7 +190,7 @@ def main() -> None:
     display_statistics(flower)
 
     print("\n=== Tree")
-    tree = Tree("Oak", 200, 365, trunk_diameter=5)
+    tree = Tree("Oak", 200, 365, 5)
     tree.show()
     print(" [statistics for Oak]")
     display_statistics(tree)
@@ -200,7 +200,7 @@ def main() -> None:
     display_statistics(tree)
 
     print("\n=== Seed")
-    seed = Seed("Sunflower", 80, 45, color="yellow")
+    seed = Seed("Sunflower", 80, 45, "yellow")
     seed.show()
     print("[make sunflower grow, age and bloom]")
     seed.age(20)
