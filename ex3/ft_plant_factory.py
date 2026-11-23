@@ -11,7 +11,7 @@
 #                                                                             #
 # *************************************************************************** #
 
-class Plant():
+class Plant:
 
     def __init__(self, name: str, height: float, age: int,
                  growth_per_day: float = 1.5) -> None:

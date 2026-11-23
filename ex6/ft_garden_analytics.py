@@ -6,13 +6,13 @@
 #    By: alkonsta <alkonsta@student.codam.nl>      +#+  +:+       +#+         #
 #                                                +#+#+#+#+#+   +#+            #
 #    Created: 2026/11/19 12:25:47 by alkonsta         #+#    #+#              #
-#    Updated: 2026/11/22 19:34:22 by alkonsta        ###   ########.nl        #
+#    Updated: 2026/11/23 11:17:02 by alkonsta        ###   ########.nl        #
 #                                                                             #
 # *************************************************************************** #
 
 class Plant:
 
-    class Statistics():
+    class Statistics:
         def __init__(self) -> None:
             self._calls: dict[str, int] = {
                     "grow": 0,
@@ -45,7 +45,7 @@ class Plant:
         return days > 365
 
     @classmethod
-    def anonymous(cls) -> Plant:
+    def anonymous(cls) -> "Plant":
         return cls("Unknown plant", 0, 0)
 
     def _is_not_negative(self, attr: str, value: int | float) -> bool:
@@ -68,7 +68,7 @@ class Plant:
         if self._is_not_negative("age", value):
             self._age = value
 
-    def get_statistics(self) -> Plant.Statistics:
+    def get_statistics(self) -> "Plant.Statistics":
         return self._statistics
 
     def show(self) -> None:

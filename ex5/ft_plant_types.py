@@ -11,7 +11,7 @@
 #                                                                             #
 # *************************************************************************** #
 
-class Plant():
+class Plant:
 
     def __init__(self, name: str, height: float = 0, age: int = 0,
                  growth_per_day: float = 1.5) -> None:
@@ -114,7 +114,7 @@ class Vegetable(Plant):
         self._nutritional_value += nutritional_value
 
 
-def main():
+def main() -> None:
     print("=== Garden Plant Types ===")
 
     print("=== Flower")
